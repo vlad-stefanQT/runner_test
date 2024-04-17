@@ -1,4 +1,4 @@
-name: ROS2 Build for ARM with QEMU
+name: ROS2 Build for ARM with runner
 
 on: [push]
 
@@ -9,10 +9,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name:
+      - name: Build on runner
         run: |
-          cd crosscompilation_ws
-          colcon build --symlink-install --packages-select cpp_pubsub
+          docker run --rm \
+            -v $(pwd)/crosscompilation_ws:/ws \
+            -w /ws \
+            ros:humble \
+            bash -c "colcon build --symlink-install"
+
       - name: Archive build result
         uses: actions/upload-artifact@v2
         with:
