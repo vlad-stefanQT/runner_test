@@ -6,16 +6,16 @@ jobs:
   build:
     name: build ros
     runs-on: self-hosted
-    container:
-      image: ros:humble
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Build on runner
         run: |
-          cd crosscompilation_ws
-          colcon build --symlink-install --packages-select cpp_pubsub
-
+          sudo docker run --rm \
+            -v $(pwd)/crosscompilation_ws:/ws \
+            -w /ws \
+            ros:humble \
+            bash -c "colcon build --symlink-install"
       - name: Archive build result
         uses: actions/upload-artifact@v2
         with:
