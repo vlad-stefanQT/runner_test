@@ -6,9 +6,11 @@ jobs:
   build:
     name: build ros
     runs-on: self-hosted
+    container:
+      image: ros:humble
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
       - name: Build on runner
         run: |
           cd crosscompilation_ws
