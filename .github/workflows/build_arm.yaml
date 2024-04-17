@@ -1,0 +1,20 @@
+name: ROS2 Build for ARM with QEMU
+
+on: [push]
+
+jobs:
+  build:
+    name: build ros
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name:
+        run: |
+          cd crosscompilation_ws
+          colcon build --symlink-install --packages-select cpp_pubsub
+      - name: Archive build result
+        uses: actions/upload-artifact@v2
+        with:
+          name: ros2_build_result
+          path: ${{ github.workspace }}/crosscompilation_ws/build/cpp_pubsub/talker
